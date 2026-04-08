@@ -411,9 +411,6 @@ if page == "🎯 Score Role":
         else:
             with st.spinner("Scoring role - looking up Glassdoor, Blind, and running analysis..."):
                 try:
-                    st.write(f"DEBUG - Gmail address: {gmail_address}")
-                    st.write(f"DEBUG - Password length: {len(gmail_password) if gmail_password else 0}")
-                    st.write(f"DEBUG - Password after strip: {len(gmail_password.replace(' ', '')) if gmail_password else 0}")
                     scored, company_name, glassdoor_data, blind_data = score_role(job_description)
 
                     # Store in session state
@@ -813,6 +810,10 @@ elif page == "📬 Weekly Briefing":
     if st.button("🚀 Generate Weekly Briefing", use_container_width=True, type="primary"):
         with st.spinner("Reading your pipeline and generating briefing..."):
             try:
+                st.write(f"DEBUG - Gmail address: {gmail_address}")
+                st.write(f"DEBUG - Password length: {len(gmail_password) if gmail_password else 0}")
+                st.write(f"DEBUG - Password after strip: {len(gmail_password.replace(' ', '')) if gmail_password else 0}")
+                
                 # ── Load tracker data ──
                 scopes = [
                     "https://www.googleapis.com/auth/spreadsheets",
