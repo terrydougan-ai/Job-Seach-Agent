@@ -9,11 +9,11 @@ from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 
-# Load credentials
+# Load credentials - works both locally and in Streamlit Cloud
 load_dotenv()
-openai_key = os.getenv("OPENAI_API_KEY")
-sheet_id = os.getenv("GOOGLE_SHEET_ID")
-serper_key = os.getenv("SERPER_API_KEY")
+openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY")
+sheet_id = os.getenv("GOOGLE_SHEET_ID") or st.secrets.get("GOOGLE_SHEET_ID")
+serper_key = os.getenv("SERPER_API_KEY") or st.secrets.get("SERPER_API_KEY")
 client = OpenAI(api_key=openai_key)
 
 # ─────────────────────────────────────────
@@ -201,7 +201,17 @@ def write_to_sheet(scored, job_url=""):
         "https://www.googleapis.com/auth/spreadsheets",
         "https://www.googleapis.com/auth/drive"
     ]
-    creds = Credentials.from_service_account_file("google_credentials.json", scopes=scopes)
+    # Use Streamlit secrets in cloud, fall back to local file
+    try:
+        creds = Credentials.from_service_account_info(
+            st.secrets["gcp_service_account"],
+            scopes=scopes
+        )
+    except:
+        creds = Credentials.from_service_account_file(
+            "google_credentials.json",
+            scopes=scopes
+        )
     gc = gspread.authorize(creds)
     spreadsheet = gc.open_by_key(sheet_id)
     worksheet = spreadsheet.sheet1
