@@ -15,8 +15,12 @@ load_dotenv()
 openai_key = os.getenv("OPENAI_API_KEY") or st.secrets.get("OPENAI_API_KEY")
 sheet_id = os.getenv("GOOGLE_SHEET_ID") or st.secrets.get("GOOGLE_SHEET_ID")
 serper_key = os.getenv("SERPER_API_KEY") or st.secrets.get("SERPER_API_KEY")
-gmail_address = os.getenv("GMAIL_ADDRESS") or st.secrets.get("GMAIL_ADDRESS", "")
-gmail_password = os.getenv("GMAIL_APP_PASSWORD") or st.secrets.get("GMAIL_APP_PASSWORD", "")
+try:
+    gmail_address = st.secrets["GMAIL_ADDRESS"]
+    gmail_password = st.secrets["GMAIL_APP_PASSWORD"]
+except:
+    gmail_address = os.getenv("GMAIL_ADDRESS", "")
+    gmail_password = os.getenv("GMAIL_APP_PASSWORD", "")
 client = OpenAI(api_key=openai_key)
 
 # ─────────────────────────────────────────
