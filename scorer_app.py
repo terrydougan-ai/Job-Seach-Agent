@@ -96,7 +96,7 @@ def serper_search(query):
         results = response.json()
         snippets = []
         for r in results.get("organic", []):
-            snippets.append(f"{r.get('title', '')} — {r.get('snippet', '')}")
+            snippets.append(f"{r.get('title', '')} - {r.get('snippet', '')}")
         return "\n".join(snippets) if snippets else "No results found."
     except Exception as e:
         return f"Search error: {e}"
@@ -108,29 +108,9 @@ def lookup_company_signals(company_name):
         blind_data = "No Blind data found for this company."
     return glassdoor_data, blind_data
 
-def score_role(job_description):
-    # Extract company name
-    company_extract = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
-            {"role": "system", "content": """Extract only the hiring company name from this job description. 
-    Return just the company name, nothing else.
-    Important rules:
-    - Return the EMPLOYER name, not the job title or department
-    - 'Microsoft' not 'Worldwide Incentive Compensation'
-    - 'Google' not 'Search Quality Team'
-    - If the company name appears in the header or 'About us' section prioritize that
-    - Never return a department, team, or program name as the company"""},
-            {"role": "user", "content": job_description[:1000]}
-        ],
-        temperature=0
-    )
-    company_name = company_extract.choices[0].message.content.strip()
+def score_role(job_description, manual_glassdoor="", manual_ceo=""):
 
-    # Look up signals
-    glassdoor_data, blind_data = lookup_company_signals(company_name)
-
-    # Score with GPT
+    # -- PASS 1: Full scoring first using complete JD --
     prompt = f"""
 You are an expert career advisor evaluating a job opportunity for a senior technology executive.
 
@@ -143,17 +123,11 @@ CANDIDATE PREFERENCES & SCORING CRITERIA:
 JOB DESCRIPTION TO EVALUATE:
 {job_description}
 
-LIVE GLASSDOOR DATA:
-{glassdoor_data}
-
-LIVE BLIND DATA:
-{blind_data}
-
 Evaluate this role and return a JSON object with EXACTLY these fields.
-Return ONLY the JSON — no explanation, no markdown, no backticks.
+Return ONLY the JSON - no explanation, no markdown, no backticks.
 
 {{
-  "company": "Company name",
+  "company": "The EMPLOYER name - the company that posted this job and will employ the person. NEVER return a software tool or technology as the company name (e.g. Microsoft Office, Smartsheet, Salesforce are tools not employers). Look for phrases like 'at [Company]', 'join [Company]', '[Company] offers benefits' to identify the true employer.",
   "role_title": "Exact role title from JD",
   "location": "Location or Remote",
   "employment_type": "Full-time/Part-time/Contract",
@@ -162,10 +136,10 @@ Return ONLY the JSON — no explanation, no markdown, no backticks.
   "expected_equity": "Equity value if posted, else ''",
   "comp_signal": "One line: does comp meet target?",
   "equity_yn": "Yes/No/TBD",
-  "glassdoor_rating": "Extract ONLY from live Glassdoor data provided. Look for patterns like '4.0 stars', '3.8 / 5', 'X based on Y ratings'. If not clearly stated return 'Not found' — do NOT guess or use training data.",
-  "ceo_approval": "Extract ONLY from live Glassdoor data provided. Look for patterns like '78% approve of CEO', '90% CEO approval'. If not clearly stated return 'Not found' — do NOT guess or use training data.",
-  "blind_informed_flag": "Extract ONLY from live Blind data. If not found return 'Not found'",
-  "leadership_culture_signal": "Summary based on Glassdoor + Blind data combined",
+  "glassdoor_rating": "To be updated",
+  "ceo_approval": "To be updated",
+  "blind_informed_flag": "To be updated",
+  "leadership_culture_signal": "To be updated",
   "company_description": "One sentence description of the company",
   "why_its_a_fit": "2-3 sentences on why this role fits Terry's background",
   "where_it_falls_short": "2-3 sentences on gaps or misalignments",
@@ -194,7 +168,55 @@ Return ONLY the JSON — no explanation, no markdown, no backticks.
 
     raw = response.choices[0].message.content.strip()
     raw = raw.replace("```json", "").replace("```", "").strip()
-    return json.loads(raw), company_name, glassdoor_data, blind_data
+    scored = json.loads(raw)
+
+    # -- PASS 2: Use scored company name for accurate lookup --
+    company_name = scored["company"]
+    glassdoor_data, blind_data = lookup_company_signals(company_name)
+
+    # -- PASS 3: Enrich culture fields with real signals --
+    enrich_prompt = f"""
+Based on this Glassdoor and Blind data for {company_name}, return ONLY a JSON object 
+with these fields updated. Return ONLY JSON, no explanation.
+
+LIVE GLASSDOOR DATA:
+{glassdoor_data}
+
+LIVE BLIND DATA:
+{blind_data}
+
+{{
+  "glassdoor_rating": "Extract ONLY from live data. If not found return 'Not found'",
+  "ceo_approval": "Extract ONLY from live data. If not found return 'Not found'",
+  "blind_informed_flag": "Extract ONLY from live data. If not found return 'Not found'",
+  "leadership_culture_signal": "2-3 sentence summary based on Glassdoor and Blind data combined",
+  "culture_score": "A float between 0.0 and 5.0 based on the Glassdoor rating, CEO approval, and Blind sentiment. A 4.0+ Glassdoor rating with high CEO approval should score 3.5-4.5. If no data found return 2.5 as neutral."
+}}
+"""
+
+    enrich_response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": "Return only valid JSON. For culture_score return a float number between 0.0 and 5.0, not a string."},
+            {"role": "user", "content": enrich_prompt}
+        ],
+        temperature=0.1
+    )
+
+    enrich_raw = enrich_response.choices[0].message.content.strip()
+    enrich_raw = enrich_raw.replace("```json", "").replace("```", "").strip()
+    enriched = json.loads(enrich_raw)
+
+    # Merge enriched fields into scored
+    scored.update(enriched)
+
+    # Apply manual overrides if provided
+    if manual_glassdoor.strip():
+        scored["glassdoor_rating"] = manual_glassdoor.strip()
+    if manual_ceo.strip():
+        scored["ceo_approval"] = manual_ceo.strip()
+
+    return scored, company_name, glassdoor_data, blind_data
 
 def write_to_sheet(scored, job_url=""):
     scopes = [
@@ -257,10 +279,24 @@ def write_to_sheet(scored, job_url=""):
 # ─────────────────────────────────────────
 
 st.set_page_config(page_title="Job Role Scorer", page_icon="🎯", layout="wide")
+
 st.markdown("""
     <style>
-    [data-testid="stMetricValue"] {
-        font-size: 1.2rem;
+    /* Metric label - larger and bolder */
+    [data-testid="stMetricLabel"] p {
+        font-size: 1.1rem !important;
+        font-weight: 600 !important;
+        color: #2c3e50 !important;
+    }
+    /* Metric value - smaller and wrapping */
+    [data-testid="stMetricValue"] div {
+        font-size: 0.95rem !important;
+        font-weight: 400 !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        line-height: 1.4 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -271,7 +307,7 @@ st.markdown("Paste a job description to score it against your resume and prefere
 # Input form
 with st.form("scorer_form"):
     job_url = st.text_input(
-        "Job URL (optional — for reference only)",
+        "Job URL (optional - for reference only)",
         placeholder="https://jobs.ashbyhq.com/company/job-id"
     )
     job_description = st.text_area(
@@ -279,6 +315,15 @@ with st.form("scorer_form"):
         height=300,
         placeholder="Paste the full job description here..."
     )
+
+    st.markdown("**Optional - Manual Glassdoor Override**")
+    st.caption("Fill these in if you already know them - overrides the auto-lookup")
+    ov1, ov2 = st.columns(2)
+    with ov1:
+        manual_glassdoor = st.text_input("Glassdoor Rating", placeholder="e.g. 4.0")
+    with ov2:
+        manual_ceo = st.text_input("CEO Approval %", placeholder="e.g. 78%")
+
     submitted = st.form_submit_button("🔍 Score This Role", use_container_width=True)
 
 # Score the role
@@ -286,14 +331,13 @@ if submitted:
     if not job_description.strip():
         st.error("Please paste a job description.")
     else:
-        with st.spinner("Scoring role — looking up Glassdoor, Blind, and running analysis..."):
+        with st.spinner("Scoring role - looking up Glassdoor, Blind, and running analysis..."):
             try:
-                scored, company_name, glassdoor_data, blind_data = score_role(job_description)
-
-                # TEMP DEBUG
-                st.write("**DEBUG — Company identified:**", company_name)
-                st.write("**DEBUG — Glassdoor raw data:**", glassdoor_data)
-                st.write("**DEBUG — Blind raw data:**", blind_data)
+                scored, company_name, glassdoor_data, blind_data = score_role(
+                    job_description,
+                    manual_glassdoor,
+                    manual_ceo
+                )
 
                 # Store in session state
                 st.session_state["scored"] = scored
@@ -301,7 +345,7 @@ if submitted:
                 st.session_state["scored_success"] = True
 
             except Exception as e:
-                st.error(f"❌ Scoring failed: {e}")
+                st.error(f"Scoring failed: {e}")
                 st.session_state["scored_success"] = False
 
 # Display results
@@ -309,14 +353,25 @@ if st.session_state.get("scored_success"):
     scored = st.session_state["scored"]
 
     st.divider()
-    st.subheader(f"📊 Results: {scored.get('company')} — {scored.get('role_title')}")
+    st.subheader(f"📊 Results: {scored.get('company')} - {scored.get('role_title')}")
 
-    # Top metrics
+    def stat_card(label, value):
+        st.markdown(f"""
+            <div style="padding: 4px 0px 16px 0px;">
+                <p style="font-size: 1.1rem; font-weight: 600; color: #2c3e50; margin-bottom: 4px;">{label}</p>
+                <p style="font-size: 0.95rem; font-weight: 400; color: #444; line-height: 1.4; margin: 0;">{value}</p>
+            </div>
+        """, unsafe_allow_html=True)
+
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Final Score", f"{scored.get('final_score')} / 5")
-    col2.metric("Priority", scored.get('priority'))
-    col3.metric("Recommended Action", scored.get('recommended_action'))
-    col4.metric("Comp Signal", scored.get('comp_signal'))
+    with col1:
+        stat_card("Final Score", f"{scored.get('final_score')} / 5")
+    with col2:
+        stat_card("Priority", scored.get('priority'))
+    with col3:
+        stat_card("Recommended Action", scored.get('recommended_action'))
+    with col4:
+        stat_card("Comp Signal", scored.get('comp_signal'))
 
     st.divider()
 
@@ -342,18 +397,6 @@ if st.session_state.get("scored_success"):
 
     st.divider()
 
-    # Company information
-    st.header("🏢 Company Information")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.subheader("Company Information")
-        st.write(scored.get('company_description'))
-    with col2:
-        st.subheader("Growth Rate")
-        st.write(scored.get('growth'))
-
-    st.divider()
-
     # Company signals
     st.subheader("🏢 Company Signals")
     sig1, sig2, sig3, sig4 = st.columns(4)
@@ -363,6 +406,7 @@ if st.session_state.get("scored_success"):
     sig4.metric("Growth", scored.get('growth'))
 
     st.info(f"**Culture Signal:** {scored.get('leadership_culture_signal')}")
+    st.info(f"**Company:** {scored.get('company_description')}")
 
     st.divider()
 
@@ -379,13 +423,12 @@ if st.session_state.get("scored_success"):
             st.write(f"**Bonus:** {scored.get('expected_bonus_pct')}")
             st.write(f"**Equity:** {scored.get('expected_equity')}")
             st.write(f"**Equity Y/N:** {scored.get('equity_yn')}")
-        st.write(f"**Company Description:** {scored.get('company_description')}")
 
     st.divider()
 
     # Write to sheet
     st.subheader("💾 Save to Google Sheet")
-    st.write("Review the scores above — if they look good, save this role to your tracker.")
+    st.write("Review the scores above - if they look good, save this role to your tracker.")
 
     if st.button("✅ Save to Google Sheet", use_container_width=True, type="primary"):
         with st.spinner("Writing to Google Sheet..."):
@@ -395,4 +438,4 @@ if st.session_state.get("scored_success"):
                 st.balloons()
                 st.session_state["scored_success"] = False
             except Exception as e:
-                st.error(f"❌ Failed to write to sheet: {e}")
+                st.error(f"Failed to write to sheet: {e}")
