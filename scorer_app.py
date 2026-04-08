@@ -814,9 +814,8 @@ elif page == "📬 Weekly Briefing":
     if st.button("🚀 Generate Weekly Briefing", use_container_width=True, type="primary"):
         with st.spinner("Reading your pipeline and generating briefing..."):
             try:
-                st.write(f"DEBUG - Gmail address: {gmail_address}")
-                st.write(f"DEBUG - Password length: {len(gmail_password) if gmail_password else 0}")
-                st.write(f"DEBUG - Password after strip: {len(gmail_password.replace(' ', '')) if gmail_password else 0}")
+                # TEMP DEBUG
+                st.write(f"DEBUG - Available secrets: {list(st.secrets.keys())}")
                 
                 # ── Load tracker data ──
                 scopes = [
