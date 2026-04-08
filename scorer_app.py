@@ -814,8 +814,6 @@ elif page == "📬 Weekly Briefing":
     if st.button("🚀 Generate Weekly Briefing", use_container_width=True, type="primary"):
         with st.spinner("Reading your pipeline and generating briefing..."):
             try:
-                # TEMP DEBUG
-                st.write(f"DEBUG - Available secrets: {list(st.secrets.keys())}")
                 
                 # ── Load tracker data ──
                 scopes = [
