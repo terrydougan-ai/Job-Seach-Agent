@@ -116,7 +116,8 @@ def lookup_company_signals(company_name):
     return glassdoor_data, blind_data
 
 def score_role(job_description):
-
+    settings = load_settings()
+    preferences = build_preferences(settings)
     # -- PASS 1: Full scoring first using complete JD --
     prompt = f"""
 You are an expert career advisor evaluating a job opportunity for a senior technology executive.
@@ -126,7 +127,7 @@ CANDIDATE RESUME:
 
 CANDIDATE PREFERENCES & SCORING CRITERIA:
 
-{build_preferences(load_settings())}
+{preferences}
 
 JOB DESCRIPTION TO EVALUATE:
 {job_description}
@@ -152,12 +153,12 @@ Return ONLY the JSON - no explanation, no markdown, no backticks.
   "why_its_a_fit": "2-3 sentences on why this role fits Terry's background",
   "where_it_falls_short": "2-3 sentences on gaps or misalignments",
   "growth": "High/Medium/Low/Unknown",
-  "culture_score": 0.0,
-  "comp_score": 0.0,
-  "scope_score": 0.0,
-  "effort_score": 0.0,
-  "fit_score": 0.0,
-  "final_score": 0.0,
+  "culture_score": "float 0.0-5.0. Scoring guide: {settings['scoring_notes']}",
+  "comp_score": "float 0.0-5.0 based on comp targets in the preferences above",
+  "scope_score": "float 0.0-5.0 based on scope criteria in the preferences above",
+  "effort_score": "float 0.0-5.0 where 5=easy fit and 1=major stretch",
+  "fit_score": "float 0.0-5.0 based on overall alignment to preferences above",
+  "final_score": "float 0.0-5.0 weighted overall score",
   "recommended_action": "Apply Immediately / Selective Apply / Do Not Apply / Research More",
   "priority": "Very High / High / Medium-High / Medium / Low",
   "current_status": "To Review",
