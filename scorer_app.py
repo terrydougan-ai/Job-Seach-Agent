@@ -168,7 +168,7 @@ Return ONLY the JSON - no explanation, no markdown, no backticks.
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are an expert career advisor. Return only valid JSON."},
+            {"role": "system", "content": """You are an expert career advisor. Return only valid JSON. CRITICAL: You MUST replace ALL score fields with actual float values between 0.0 and 5.0. Never return 0.0 for any score unless the role truly deserves a zero. Scores to fill in: culture_score, comp_score, scope_score, effort_score, fit_score, final_score."""},
             {"role": "user", "content": prompt}
         ],
         temperature=0.2
