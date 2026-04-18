@@ -27,67 +27,12 @@ client = OpenAI(api_key=openai_key)
 # RESUME & PREFERENCES
 # ─────────────────────────────────────────
 
-RESUME = """
-TERRY DOUGAN
-VP / Head of Technology Program Management & Product Operations | Chief of Staff to CTO/CPO | Strategy to Execution
-
-PROFILE:
-Technology operations leader with a track record of serving as the operational right-hand to CTOs and CPOs 
-in fast-moving engineering and product organizations. Specializes in translating executive priorities into 
-clear, trackable initiatives; owning operating cadences, cross-functional alignment, KPI frameworks, and 
-the accountability structures that keep complex technology organizations executing with discipline.
-
-Deep experience supporting executive decision-making, preparing board and leadership materials, driving OKRs 
-and investment trade-offs. AI-fluent: led delivery governance for 30+ LLM, RAG, and Generative AI initiatives 
-in production. Proven ability to maintain execution momentum through sustained ambiguity.
-
-EXPERIENCE:
-- VP, Product & Delivery Operations, Clarivate (2023-2025): Chief of Staff to CTO across 1,000+ person 
-  global tech org. $120M+ portfolio. Team of 40+. Led 30+ AI/ML initiatives to production. Built portfolio 
-  dashboards, OKR frameworks, delivery improvement programs. Improved renewal rates 83%->92% on $60M+ ARR products.
-- VP, Product Operations & Launch Readiness, CPA Global/Clarivate (2020-2023): Chief of Staff to 3 successive 
-  CPOs. $400M+ R&D portfolio. 200+ products. Shifted strategic investment from 10% to 35%.
-- Director of Technology, Thomson Reuters (2016-2020): Led 50+ person global engineering org. AWS migration, 
-  platform modernization, 99.9%+ uptime, M&A integration.
-- Director, Technology Program Management, Thomson Reuters (2014-2016): Global PMO, $250M revenue BU.
-- Senior TPM, Software Engineer, Thomson Reuters (2006-2014)
-- Consultant/Manager, Accenture (1994-2000): SAP/Oracle enterprise solutions.
-- Software Engineer, Procter & Gamble (1993)
-
-EDUCATION: B.S. Systems & Control Engineering, Case Western Reserve University (Cum Laude, Tau Beta Pi)
-SKILLS: Python, SQL, AWS, Tableau, PowerBI, Snowflake, Jira, Smartsheet, SAFe/LPM, Scrum, Pendo
-AI CERTS: Deep Learning Specialization, Generative AI for Everyone, AI Python (DeepLearning.AI 2025)
-"""
-
-PREFERENCES = """
-TARGET ROLES:
-- Director / Senior Director / VP / Head of: Technical Program Management, Program/Portfolio/PMO (strategic), 
-  Product Operations, Transformation/Strategic Execution
-- Chief of Staff to CTO/CPO/Head of Engineering/Product ONLY if: strategic + execution-focused, owns portfolio 
-  prioritization, operating cadence, cross-functional alignment
-- EXCLUDE: admin/comms-heavy CoS roles, pure PMO/administrative roles
-
-COMPANY PREFERENCES:
-- High priority: Mission-driven (women in tech, STEM, healthcare/wellness), AI/data/platform companies, 
-  personal health/wellness tech
-- Strong fit: Data/analytics platforms, Enterprise SaaS/platform companies, AI-native or AI-enabled companies
-- Conditional: Consulting/research ONLY if directly tied to software/data/tech execution
-
-COMPENSATION:
-- Base: $200K+
-- Total Comp: $250K-$400K+ preferred
-- Flex allowed for exceptional scope or strong mission alignment
-
-LOCATION: Remote (US) preferred. Also: Detroit metro, Columbus, Cincinnati
-
-SCORING CRITERIA (0-5 scale):
-- Culture Score: Leadership quality, employee satisfaction, mission alignment, Glassdoor signals
-- Comp Score: How well total comp meets targets ($250K-$400K+)
-- Scope Score: Strategic influence, team leadership, executive exposure, portfolio ownership
-- Effort Score: Estimated fit effort required (5=easy fit, 1=major stretch)
-- Fit Score: Overall alignment to target role type and company preferences
-- Final Score: Weighted overall score
-"""
+# Load resume from file, fall back to default if not found
+try:
+    with open('resume.txt', 'r') as f:
+        RESUME = f.read()
+except FileNotFoundError:
+    RESUME = "Resume file not found - please add resume.txt to the app directory."
 
 # ─────────────────────────────────────────
 # HELPER FUNCTIONS
@@ -126,7 +71,6 @@ CANDIDATE RESUME:
 {RESUME}
 
 CANDIDATE PREFERENCES & SCORING CRITERIA:
-
 {preferences}
 
 JOB DESCRIPTION TO EVALUATE:
@@ -143,15 +87,15 @@ Return ONLY the JSON - no explanation, no markdown, no backticks.
   "expected_base": "Base salary range if posted, else 'Not posted'",
   "expected_bonus_pct": "Bonus % if posted, else ''",
   "expected_equity": "Equity value if posted, else ''",
-  "comp_signal": "One line: does comp meet target?",
+  "comp_signal": "One line: does comp meet target? When a range is posted, evaluate the range holistically - reference the midpoint and ceiling, not just the floor.",
   "equity_yn": "Yes/No/TBD",
   "glassdoor_rating": "To be updated",
   "ceo_approval": "To be updated",
   "blind_informed_flag": "To be updated",
   "leadership_culture_signal": "To be updated",
   "company_description": "One sentence description of the company",
-  "why_its_a_fit": "2-3 sentences on why this role fits Terry's background",
-  "where_it_falls_short": "2-3 sentences on gaps or misalignments",
+  "why_its_a_fit": "2-3 sentences that each open with a specific data point or achievement pulled directly from the resume. Examples of acceptable openers: $120M+ R&D portfolio oversight, Led 30+ AI/ML initiatives to production, Built BI function with Tableau/PowerBI/Snowflake, 83% to 92% renewal rate improvement, $400M+ portfolio rationalization. Do not use generic openers. Every sentence must be anchored to a specific fact from the resume.",
+  "where_it_falls_short": "2-3 specific sentences naming the actual gaps - cite specific required or desired qualifications the candidate does not have. If this is a domain shift (e.g. internal IT systems vs product delivery ops), name it explicitly. End with a Key Risk sentence - the single biggest reason not to apply.",
   "growth": "High/Medium/Low/Unknown",
   "culture_score": "float 0.0-5.0. Scoring guide: {settings['scoring_notes']}",
   "comp_score": "float 0.0-5.0 based on comp targets in the preferences above",
@@ -159,7 +103,7 @@ Return ONLY the JSON - no explanation, no markdown, no backticks.
   "effort_score": "float 0.0-5.0 where 5=easy fit and 1=major stretch",
   "fit_score": "float 0.0-5.0 based on overall alignment to preferences above",
   "final_score": "float 0.0-5.0 weighted overall score",
-  "recommended_action": "Apply Immediately / Selective Apply / Do Not Apply / Research More",
+  "recommended_action": "Choose exactly one: Apply Immediately, Apply - Know Your Gaps, Selective Apply, Do Not Apply, Research More",
   "priority": "Very High / High / Medium-High / Medium / Low",
   "current_status": "To Review",
   "date_added": "{datetime.today().strftime('%m/%d/%Y')}"
@@ -169,7 +113,7 @@ Return ONLY the JSON - no explanation, no markdown, no backticks.
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": """You are an expert career advisor. Return only valid JSON. CRITICAL: You MUST replace ALL score fields with actual float values between 0.0 and 5.0. Never return 0.0 for any score unless the role truly deserves a zero. Scores to fill in: culture_score, comp_score, scope_score, effort_score, fit_score, final_score."""},
+            {"role": "system", "content": "You are an expert career advisor. Return only valid JSON. CRITICAL: You MUST replace ALL score fields with actual float values between 0.0 and 5.0. Never return 0.0 for any score unless the role truly deserves a zero. Scores to fill in: culture_score, comp_score, scope_score, effort_score, fit_score, final_score. For comp_score specifically: always evaluate the full posted salary range, not just the floor. Calculate the midpoint of the range and use that as the primary basis for scoring. If the midpoint meets or exceeds the candidate's base target, score comp_score 4.5 or higher. If the ceiling significantly exceeds candidate's base target, score comp_score 4.5-5.0. Only score comp_score below 3.0 if the realistic likely base falls meaningfully below candidate's base target even when considering the full range. Never penalize a role for having a floor slightly below target if the midpoint and ceiling are strong. For why_its_a_fit specifically: every sentence MUST open with a specific metric or data point from the resume or similar concrete facts. Generic openers are NOT acceptable. Never use backticks, code blocks, or any markdown formatting characters in any text fields. All text fields must be plain prose only."},
             {"role": "user", "content": prompt}
         ],
         temperature=0.2
@@ -431,6 +375,12 @@ if page == "🎯 Score Role":
     if st.session_state.get("scored_success"):
         scored = st.session_state["scored"]
 
+        # Strip any backtick code formatting the model may have added
+        if "why_its_a_fit" in scored:
+            scored["why_its_a_fit"] = scored["why_its_a_fit"].replace("`", "")
+        if "where_it_falls_short" in scored:
+            scored["where_it_falls_short"] = scored["where_it_falls_short"].replace("`", "")
+
         st.divider()
         st.subheader(f"📊 Results: {scored.get('company')} - {scored.get('role_title')}")
 
@@ -467,13 +417,16 @@ if page == "🎯 Score Role":
 
         # Fit analysis
         col1, col2 = st.columns(2)
+
         with col1:
             st.subheader("✅ Why It's a Fit")
-            st.write(scored.get('why_its_a_fit'))
+            clean_fit = (scored.get('why_its_a_fit') or '').replace('`', '')
+            st.text(clean_fit)
         with col2:
             st.subheader("⚠️ Where It Falls Short")
-            st.write(scored.get('where_it_falls_short'))
-
+            clean_short = (scored.get('where_it_falls_short') or '').replace('`', '')
+            st.text(clean_short)
+            
         st.divider()
 
         # Company signals
@@ -551,6 +504,7 @@ elif page == "📋 Job Tracker":
         df = pd.DataFrame(rows, columns=headers)
         df.columns = [str(h).strip() for h in df.columns]
         df = df[df["Company"].str.strip() != ""]
+        df = df[df["Company"].str.strip().str.lower() != "company"]
         df["_row_index"] = range(2, len(df) + 2)  # 1-indexed + header row
         return df, worksheet
 
@@ -661,9 +615,36 @@ elif page == "📋 Job Tracker":
             col1, col2 = st.columns(2)
             with col1:
                 st.write(f"**Location:** {row.get('Location', '')}")
-                st.write(f"**Expected Base:** {row.get('Expected Base ($)', '')}")
+                def format_base(val):
+                    if not val or str(val).strip() == "":
+                        return "Not posted"
+                    val = str(val).strip().replace("$", "").strip()
+                    
+                    # Find separator
+                    separator = None
+                    for sep in ["\u2014", "\u2013", " - ", "-"]:
+                        if sep in val:
+                            separator = sep
+                            break
+                    
+                    if separator:
+                        parts = [p.strip() for p in val.split(separator)]
+                        try:
+                            low = int(float(parts[0].replace(",", "")))
+                            high = int(float(parts[1].replace(",", "")))
+                            return f"${low:,} to ${high:,}"
+                        except:
+                            return val
+                    try:
+                        num = int(float(val.replace(",", "")))
+                        return f"${num:,}"
+                    except:
+                        return val
+                base_formatted = format_base(row.get('Expected Base ($)', ''))
+                st.write(f"**Expected Base:** {base_formatted}")
                 st.write(f"**Comp Signal:** {row.get('Comp Signal (Base + Bonus)', '')}")
-                st.write(f"**Glassdoor Rationg:** {row.get('Glassdoor Rating', '')}")
+                st.write(f"**Company Description:** {row.get('Company Description', '')}")
+                st.write(f"**Glassdoor Rating:** {row.get('Glassdoor Rating', '')}")
                 st.write(f"**Why It Is A Fit:** {row.get('Why Its a Fit')}")
             with col2:
                 st.write(f"**Recommended Action:** {row.get('Recommended Action', '')}")
@@ -673,6 +654,7 @@ elif page == "📋 Job Tracker":
                     st.markdown(f"**Application Link:** [Open Job Posting]({app_link})")
                 else:
                     st.write("**Application Link:** Not set")
+                st.write(f"**Company Growth:** {row.get('Growth')}")
                 st.write(f"**CEO Approval:** {row.get('CEO Approval')}")
                 st.write(f"**Where It Falls Short:** {row.get('Where it Falls Short')}")
 
@@ -792,11 +774,20 @@ elif page == "📋 Job Tracker":
                                 )
                             gc_fresh = gspread.authorize(creds)
                             ws_fresh = gc_fresh.open_by_key(sheet_id).sheet1
-                            ws_fresh.delete_rows(row["_row_index"])
-                            st.success(f"✅ {row['Company']} deleted!")
-                            st.cache_data.clear()
-                            st.session_state.pop(f"confirm_delete_{row['_row_index']}", None)
-                            st.rerun()
+                            st.write(f"DEBUG - Attempting to delete row index: {row['_row_index']}")
+                            st.write(f"DEBUG - Company: {row['Company']} | Status: {row['Current Status']}")
+                            
+                            try:
+                                ws_fresh.delete_rows(row["_row_index"])
+                                st.cache_data.clear()
+                                st.session_state.pop(f"confirm_delete_{row['_row_index']}", None)
+                                st.success(f"✅ {row['Company']} deleted!")
+                                import time
+                                time.sleep(1.5)
+                                st.rerun()
+                            except Exception as delete_error:
+                                st.error(f"❌ Delete failed with error: {delete_error}")
+
                         except Exception as e:
                             st.error(f"❌ Failed to delete: {e}")
 elif page == "📬 Weekly Briefing":
@@ -936,6 +927,7 @@ ACTIVE PIPELINE DATA:
                     ],
                     temperature=0.4
                 )
+                
                 summary = brief_response.choices[0].message.content
 
                 # ── Store in session state ──

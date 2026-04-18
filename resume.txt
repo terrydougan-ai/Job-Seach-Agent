@@ -1,0 +1,276 @@
+TERRY DOUGAN
+
+Strategy-to-Execution Leader for Product & Technology Organizations
+
+Product Strategy | Business Operations | Technical Program Leadership |
+Portfolio Governance | Data & Analytics
+
++-----------------------------------------------------------------------+
+| PROFILE                                                               |
++-----------------------------------------------------------------------+
+
+My work sits at the intersection of product, engineering, and delivery,
+where strategy becomes real through coordinated execution. I’m known for
+aligning priorities across product, engineering, operations, and
+go-to-market teams; translating strategy into executable plans; and
+establishing lightweight operating rhythms that help organizations
+deliver complex initiatives at scale.
+
+Over the course of my career, I’ve led technical program management,
+product operations, and portfolio governance functions supporting global
+SaaS and data platform organizations. With hands-on roots as a software
+developer and DBA, I bring a practical understanding of how product and
+technical teams operate and how data can be used to connect product
+usage, operational performance, and investment decisions giving
+leadership clearer visibility into execution and business outcomes.
+
+CORE COMPETENCIES:
+
+Enterprise Technology Portfolio Management | Technical Program
+Management Leadership | Product Operations & Operating Cadence |
+Strategy-to-Execution Delivery | Portfolio Prioritization & Investment
+Governance | Product & Business Analytics
+
+Cross-Functional Product & Engineering Leadership | Global Technology
+Team Leadership | Enterprise Platform Modernization | Executive
+Stakeholder Partnership (CPO / CTO / CFO) | New Product Introduction
+(NPI) | M&A Technology Integration | Executive Operating Cadence
+(MBR/QBR)
+
++-----------------------------------------------------------------------+
+| WORK EXPERIENCE                                                       |
++-----------------------------------------------------------------------+
+
+CLARIVATE - Global enterprise software, data, and analytics platform
+company (~$2.6B revenue) serving research, IP, and innovation-driven
+organizations worldwide.
+
+VP, Head of Technology Program Management, Product Operations, & Business Intelligence (IP Group) 
+
+03/2023 — 10/2025
+
+Directed global Product Operations, Technical Program Management, and
+Business Analytics functions overseeing execution and performance
+aligning investment priorities, delivery capacity, and product outcomes
+across global product development teams. Team of 40+ supporting global
+organization of 1000+ technologists and 60+ products.
+
+-   Portfolio Governance & Executive Oversight: Architected and scaled
+    cross-organizational program governance across a $120M+ R&D
+    investment portfolio and 60+ products, aligning Product,
+    Engineering, Finance, and GTM leaders on priorities, dependencies,
+    and delivery risk. Managed cross-program dependencies, proactively
+    identified and mitigated risks before they impacted delivery, and
+    maintained clear, timely status reporting to executive leadership.
+    When complex initiatives stalled, stepped in directly to restore
+    alignment across engineering and executive stakeholders and return
+    programs to delivery momentum.
+
+-   Delivery Predictability & Continuous Improvement: Established
+    product operating cadence, OKR alignment, and portfolio framework
+    across global product and engineering teams. Then drove a
+    portfolio-wide delivery improvement initiative across six business
+    segments, strengthening SDLC discipline through structured delivery
+    assessments, systemic process changes, and standardized planning and
+    dependency management practices. Delivered measurable gains in
+    predictability (~20%), reduced rework (~30%), and faster release
+    cycles (~20%).
+
+-   AI Program Leadership & Delivery Adoption: Partnered with Data
+    Science leadership to scale a centralized AI/ML function and drove
+    program governance and adoption for 30+ AI initiatives (LLMs, RAG,
+    Generative AI, customer-facing chatbots) delivered to production.
+    Built the delivery standards and team practices that enabled
+    cross-geography engineering teams to execute AI programs with
+    consistency and speed.
+
+-   Business Intelligence & Analytics Leadership: Built and led the BI
+    function supporting Product, Technology, Sales, and Customer
+    Operations. Implemented Tableau/PowerBI dashboards (Snowflake
+    backend) delivering real-time visibility into investment allocation,
+    backlog health, sprint completion, sales pipeline progression,
+    feature adoption trends, and renewal risk — connecting product
+    usage, operational performance, and investment decisions into a
+    single trusted picture for CTO and CPO leadership.
+
+-   Data-Driven Renewal Program: Implemented product instrumentation
+    (Pendo), analytics, and process changes connecting product usage
+    trends with renewal planning, helping increase renewal rates from
+    83%→92% and 86%→94% across two $60M+ ARR products.
+
+-   Portfolio Investment Planning & Financial Governance: Partnered with
+    Finance and executive leadership to lead annual and multi-year R&D
+    budget allocation across a $120M+ technology investment portfolio,
+    directing $15M+ of incremental funding toward strategic growth
+    initiatives. Built scenario modeling tools to support investment
+    trade-off discussions and capacity planning.
+
+-   Team Leadership & Organizational Scaling: Built, expanded, and
+    mentored a high-performing team across Technical Program Management,
+    Business Intelligence, and Product Operations — growing from 25 to
+    45 and resetting the function to become trusted delivery partners to
+    Product, Technology, and Sales leaders across four major business
+    units.
+
+VP, Head of Product Operations & GTM Readiness
+
+08/2019 — 03/2023
+
+Led global program and portfolio management across Product and
+Technology organizations supporting SaaS platforms, data products, and
+enterprise customer solutions. (Role began at CPA Global prior to
+acquisition by Clarivate.)
+
+-   Portfolio Investment Governance: Partnered directly with Finance and
+    executive leadership to own the annual and multi-year R&D budget
+    process, overseeing a $400M+ technology investment portfolio. Led a
+    comprehensive portfolio rationalization following the CPA Global
+    acquisition — analyzing revenue performance, cost structure, and
+    market positioning across 200+ products to recommend investment
+    priorities, product retirements, and strategic roadmap focus —
+    enabling leadership to shift allocation toward strategic initiatives
+    from ~10% to 35%, a structural rebalancing that defined the
+    company's technology direction for years forward.
+
+-   PMO Operating Model & Governance Frameworks: Designed the PMO
+    operating model and governance frameworks that translated product
+    strategy into coordinated execution across global engineering teams,
+    continuously iterating on processes and standards based on direct
+    stakeholder feedback and treating the PMO function itself as a
+    product to be improved rather than a fixed overhead.
+
+-   GTM Alignment & Launch Excellence: Owned New Product Introduction
+    (NPI) and GTM launch synchronization across Product, Engineering,
+    and GTM teams. Built and scaled delivery operating rhythms —
+    portfolio planning, prioritization, and execution reviews —
+    improving cross-functional alignment and decision-making.
+
+-   Product Discovery & Experimentation: Partnered with UX leadership to
+    establish and roll out a Design-Led Thinking program and stage-gate
+    experimentation framework that improved early-stage product
+    discovery, enabling teams to validate concepts, test hypotheses, and
+    strengthen upfront product planning.
+
+THOMSON REUTERS
+
+Director, Software Engineering & Technology (IP & Science Group) 
+
+10/2015 — 08/2019
+
+Led a global organization of 50+ engineers, QA, production support, and
+program managers responsible for development, modernization, and
+operation of mission-critical IP lifecycle and payments platforms.
+Delivered and supported both SaaS and on-prem solutions for various
+clients such as government, pharmaceutical, legal and technology
+clients. (Role continued through the formation of Clarivate and
+subsequent sale of the business unit to CPA Global.)
+
+-   Platform Modernization: Drove challenging modernization of legacy
+    product platforms by simultaneously updating tech architecture and
+    improving product usability and feature set while managing to retain
+    100% of top customer accounts, improving customer satisfaction and
+    driving growth in core markets.
+
+-   Cloud Migration & Infrastructure Transformation: Directed
+    large-scale migration of mission-critical commercial software
+    platforms to AWS, managing the end-to-end deployment roadmap,
+    evaluating cloud architecture tradeoffs, and coordinating engineers,
+    vendors, and partners to achieve zero-downtime cutover and deliver
+    the cloud delivery experience that informs current program
+    leadership.
+
+-   High-Availability Systems & Reliability: Owned delivery and
+    operation of high-availability commercial software systems (99.9%+
+    uptime) for enterprise and government clients, including delivery
+    environments subject to SOC2 and FedRAMP compliance requirements.
+    Implemented DORA-aligned engineering metrics (deployment frequency,
+    change failure rate, MTTR) to track release quality and system
+    stability. Expanded test automation, improved code coverage, and
+    streamlined release processes, reducing testing cycle times by 33%.
+
+-   M&A Integration & Organizational Transformation: Led technology
+    integration and PMO consolidation through the acquisition of CPA
+    Global by Clarivate, representing the technology organization in M&A
+    diligence discussions, management presentations, and buyer
+    evaluations alongside executive leadership, then driving
+    post-acquisition organizational integration across multiple business
+    units to establish consistent governance and reporting standards.
+
+-   Release Quality: Coordinated across Product, Engineering, QA and
+    Product Support teams to improve overall product quality and
+    responsiveness to customer requests ensuring these were reviewed and
+    prioritized fairly with internal roadmaps resulting in 40% reduction
+    in time to close, 50% reduction in open backlog, and overall
+    improvement in customer satisfaction.
+
+Director, Technology Program Management (IP & Science Group) 
+
+03/2014 — 10/2015
+
+Led a global PMO supporting the IP & Science business unit (~$250M
+annual revenue), overseeing program planning, delivery governance, and
+portfolio-level risk management.
+
+-   Annual Planning: Implemented annual investment planning across the
+    IP & Science Group, aligning strategic priorities with project
+    objectives and securing necessary investments. This resulted in an
+    average of 15% increase per year in capital investment in key
+    projects.
+
+-   Customer Quality: Aligned Product, Engineering, Quality Assurance,
+    and Customer Support stakeholders on feature prioritization and
+    delivery tradeoffs, driving a 90% reduction in high priority
+    production issues while improving responsiveness to new feature
+    requests and customer satisfaction.
+
+Senior Technology Program Manager (FindLaw) 
+
+07/2009 — 03/2014
+
+-   Delivered high-profile software initiatives across globally
+    distributed teams — including a new internal operations tool (30%
+    faster product delivery, 20% reduced internal effort) and a global
+    expansion establishing development and QA presence in Bengaluru (50%
+    increase in development capacity).
+
+Software Engineer/Senior Software Engineer (Legal Group) 
+
+11/2006 — 07/2009
+
+Technical lead for data driven applications and high volume, customer facing systems specializing in Oracle data warehouse design and performance optimization, schema design, SQL/PLSQL data visualizations 
+
+EARLIER CAREER
+
+Accenture — Consultant/Manager: Delivered SAP/Oracle enterprise solutions supporting manufacturing operations, specializing in database administration, ETL, and performance testing in production environments with strict reliability requirements.
+
+Procter & Gamble — Software Engineer: Developed manufacturing operations software supporting quality, reliability, and real-time performance metrics.
+
++-----------------------------------------------------------------------+
+| EDUCATION                                                             |
++-----------------------------------------------------------------------+
+
+CASE WESTERN RESERVE UNIVERSITY | Cleveland, OH 
+
+B.S., Systems & Control Engineering | Cum Laude, Tau Beta Pi Engineering Honor Society, Society of Women Engineers (SWE), Varsity Women’s Soccer.
+
++-----------------------------------------------------------------------+
+| CAPABILITIES & CERTIFICATIONS                                         |
++-----------------------------------------------------------------------+
+
+Business & Analytics: Tableau | PowerBI | Snowflake | Salesforce |
+Workday | Smartsheet | Confluence | SharePoint
+
+Product & Delivery: Scaled Agile (SAFe) | Lean Portfolio Management
+(SAFe LPM) | Scrum | Jira | Jira Advanced Roadmaps | Aha! | Pendo | SOX
+| SOC2 | FedRAMP
+
+Cloud & Technical: AWS (migration & cost optimization) | Python |
+Jupyter Notebook | Datadog | Oracle DB | SQL/PLSQL | GitHub
+
+AI & Data Certifications: Deep Learning Specialization | Generative AI
+for Everyone | AI Python (DeepLearning.AI, 2025) | Google Python
+Certification (Coursera, 2025)
+
+Management & Operations Certifications: Product Operations Master |
+Product Roadmaps Master (Product-Led Alliance, 2025) | Product Strategy
+| Pricing & Monetization | Product Operations Master (Reforge, 2026)
