@@ -63,6 +63,7 @@ def lookup_company_signals(company_name):
 def score_role(job_description):
     settings = load_settings()
     preferences = build_preferences(settings)
+    st.write(f"DEBUG - Resume character count: {len(RESUME)}")
     # -- PASS 1: Full scoring first using complete JD --
     prompt = f"""
 You are an expert career advisor evaluating a job opportunity for a senior technology executive.

@@ -5,6 +5,25 @@ Strategy-to-Execution Leader for Product & Technology Organizations
 Product Strategy | Business Operations | Technical Program Leadership |
 Portfolio Governance | Data & Analytics
 
+EXECUTIVE SUMMARY (READ THIS FIRST):
+VP-level technology executive with 15+ years leading Technical Program Management, 
+Product Operations, Portfolio Governance, and AI delivery at global enterprise scale.
+
+Key credentials:
+- Led 40+ person global teams across TPM, BI, and Product Operations
+- Governed $120M+ R&D investment portfolios across 60+ products
+- Directed cross-functional programs across 1,000+ person engineering organizations
+- Delivered 30+ AI/ML initiatives (LLMs, RAG, Generative AI) to production
+- Chief of Staff to CTO and CPO through multiple leadership transitions
+- Led M&A technology integration across major acquisitions
+- Built executive dashboards connecting delivery, investment, and product outcomes
+- Improved renewal rates 83%→92% on $60M+ ARR products through data-driven programs
+- AWS cloud migration, platform modernization, 99.9%+ uptime SLAs
+- Background: Software Engineer → DBA → TPM → Director → VP
+
+This candidate has extensive experience managing cross-functional programs at scale 
+across global enterprise technology organizations.
+
 +-----------------------------------------------------------------------+
 | PROFILE                                                               |
 +-----------------------------------------------------------------------+
